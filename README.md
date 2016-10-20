@@ -1,4 +1,4 @@
-#Twitter-politic#s
+#Twitter-politics#
 
 ##What is twitter-politics##
 Twitter-politics is an application that provides an overview of the current politic state.
