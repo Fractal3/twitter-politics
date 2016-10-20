@@ -7,5 +7,6 @@ twitter-politics will mainly give an overview of the USA presidential campaign o
 
 ###Contributors
 Christophe Rannou
+
 Pierrick Calmels
 
