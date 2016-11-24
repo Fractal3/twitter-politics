@@ -9,7 +9,7 @@ import codecs
 user_ids = "25073877, 1339835893"
 
 # Username used when writing the files
-username = 'fr4ctal'
+username = 'pi3rrick'
 
 twitter = Twython(app_key=auth.api_key,
                   app_secret=auth.api_secret,
@@ -41,7 +41,7 @@ for i in range(0, 16):  ## iterate through all tweets
     outfp = codecs.open("data/raw_{}.csv".format(username), "a", encoding="utf-8")
 
     ## tweet extract method with the last list item as the max_id
-    user_timeline = twitter.get_user_timeline(user_id="1339835893", count=200, include_retweets=False, max_id=max_id,
+    user_timeline = twitter.get_user_timeline(user_id="25073877", count=200, include_retweets=False, max_id=max_id,
                                               since_id=mostRecentId)
     for tweet in user_timeline:
         id = tweet['id']
