@@ -32,11 +32,9 @@ mostRecentId = startId
 f.close()
 max_id = None
 
-textBuffer = []
-
 l = 1
 lis = []
-for line in reversed(open("data/tweets_pi3rrick.csv").readlines()):
+for line in reversed(open("data/tweets_{}.csv".format(username)).readlines()):
     tweet_id = long(line.split("\t")[0])
     if tweet_id < mostRecentId:
         pass
