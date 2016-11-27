@@ -5,11 +5,8 @@ import datetime
 import os
 import codecs
 
-#  Trump, Clinton
-user_ids = "25073877, 1339835893"
-
 # Username used when writing the files
-username = 'fr4ctal'
+username = auth.username
 
 
 twitter = Twython(app_key=auth.api_key,
@@ -34,14 +31,14 @@ max_id = None
 
 l = 1
 lis = []
-for line in reversed(open("data/tweets_{}.csv".format(username)).readlines()):
+for line in reversed(open("data/tweets_{}.tsv".format(username)).readlines()):
     tweet_id = long(line.split("\t")[0])
     if tweet_id < mostRecentId:
         pass
     else:
         retweet_timeline = twitter.get_retweets(id=tweet_id, trim_user=0, count=15)
-        f = codecs.open("data/retweets_{}.csv".format(username), "a", encoding="utf-8")
-        f2 = codecs.open("data/retweets_{}_{}.csv".format(username, outfn), "a", encoding="utf-8")
+        f = codecs.open("data/retweets_{}.tsv".format(username), "a", encoding="utf-8")
+        f2 = codecs.open("data/retweets_{}_{}.tsv".format(username, outfn), "a", encoding="utf-8")
         lis.append(tweet_id)
         for retweet in retweet_timeline:
             # id = retweet['id']
