@@ -65,7 +65,7 @@ for line in reversed(open("data/tweets_{}.csv".format(username)).readlines()):
         f.close()
         f2.close()
         mostRecentId = tweet_id+1
-        if l >= 75:
+        if l >= 74:
             print("INFO : Sleeping")
             time.sleep(900)  ## 15 minute rest between api calls
             l = 0
