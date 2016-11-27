@@ -9,7 +9,7 @@ import codecs
 user_ids = "25073877, 1339835893"
 
 # Username used when writing the files
-username = 'pi3rrick'
+username = 'fr4ctal'
 
 
 twitter = Twython(app_key=auth.api_key,
