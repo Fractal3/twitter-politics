@@ -36,8 +36,8 @@ for i in range(0, 16):  ## iterate through all tweets
     ## tweet extract method with the last list item as the max_id
     user_timeline = twitter.get_user_timeline(user_id="25073877", count=200, include_retweets=False, max_id=max_id,
                                               since_id=startId)
-    f = codecs.open("data/tweets_{}.tsv".format(username), "a", encoding="utf-8")
-    f2 = codecs.open("data/tweets_{}_{}.tsv".format(username,outfn), "a", encoding="utf-8")
+    f = codecs.open("data/tweets_{}.csv".format(username), "a", encoding="utf-8")
+    f2 = codecs.open("data/tweets_{}_{}.csv".format(username,outfn), "a", encoding="utf-8")
     lis = []
     for tweet in user_timeline:
         id = tweet['id']
