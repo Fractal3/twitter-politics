@@ -34,50 +34,48 @@ max_id = None
 
 textBuffer = []
 
-# for i in range(1):
-with open('RetweetedTweetsId', 'a') as retweetsToCheck:
-    l = 1
-    lis = []
-    for line in reversed(open("data/tweets_pi3rrick.csv").readlines()):
-        tweet_id = long(line.split("\t")[0])
-        if tweet_id < mostRecentId:
-            pass
-        retweet_timeline = twitter.get_retweets(id=tweet_id, trim_user=0, count=15)
-        f = codecs.open("data/retweets_{}.csv".format(username), "a", encoding="utf-8")
-        f2 = codecs.open("data/retweets_{}_{}.csv".format(username, outfn), "a", encoding="utf-8")
-        lis.append(tweet_id)
-        for retweet in retweet_timeline:
-            # id = retweet['id']
-            # lis.append(id)  ## append tweet id's
-            values = [str(tweet_id)]
-            for x in retweet_fields:
-                if x == "entities" or x == "user":
-                    obj = retweet[x]
-                    field_chooser = lambda l: entities_field if l == "entities" else user_fields
-                    field = field_chooser(x)
-                    for y in field:
-                        values.append(obj[y])
-                elif x == "text":
-                    values.append(retweet['text'].replace('\n', ' '))
-                else:
-                    values.append(retweet[x])
-            line = "\t".join(x if isinstance(x, unicode) else str(x) for x in values) +"\n"
-            print(line)
-            f.write(line)
-            f2.write(line)
-        f.close()
-        f2.close()
-
-        if l >= 75:
-            print("INFO : Sleeping")
-            time.sleep(900)  ## 5 minute rest between api calls
-            l = 0
-        else:
-            print l
-            l += 1
-
-    f = open('mostRecentRetweetId', 'w')
-    f.write(str(tweet_id))
+l = 1
+lis = []
+for line in reversed(open("data/tweets_pi3rrick.csv").readlines()):
+    tweet_id = long(line.split("\t")[0])
+    if tweet_id < mostRecentId:
+        pass
+    retweet_timeline = twitter.get_retweets(id=tweet_id, trim_user=0, count=15)
+    f = codecs.open("data/retweets_{}.csv".format(username), "a", encoding="utf-8")
+    f2 = codecs.open("data/retweets_{}_{}.csv".format(username, outfn), "a", encoding="utf-8")
+    lis.append(tweet_id)
+    for retweet in retweet_timeline:
+        # id = retweet['id']
+        # lis.append(id)  ## append tweet id's
+        values = [str(tweet_id)]
+        for x in retweet_fields:
+            if x == "entities" or x == "user":
+                obj = retweet[x]
+                field_chooser = lambda l: entities_field if l == "entities" else user_fields
+                field = field_chooser(x)
+                for y in field:
+                    values.append(obj[y])
+            elif x == "text":
+                values.append(retweet['text'].replace('\n', ' '))
+            else:
+                values.append(retweet[x])
+        line = "\t".join(x if isinstance(x, unicode) else str(x) for x in values) +"\n"
+        print(line)
+        f.write(line)
+        f2.write(line)
     f.close()
+    f2.close()
+
+    if l >= 75:
+        print("INFO : Sleeping")
+        time.sleep(900)  ## 5 minute rest between api calls
+        l = 0
+    else:
+        print l
+        l += 1
+
+f = open('mostRecentRetweetId', 'w')
+f.write(str(tweet_id))
+f.close()
 
 
