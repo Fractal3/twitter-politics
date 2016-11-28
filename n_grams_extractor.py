@@ -7,8 +7,9 @@ import sklearn.feature_extraction.text as fet
 # from sklearn.linear_model import SGDClassifier
 # from sklearn.ensemble import RandomForestClassifier, AdaBoostClassifier
 # from sklearn.linear_model import RidgeClassifier
-
+import auth
 import numpy as np
+import os
 from time import time
 
 
@@ -19,31 +20,32 @@ def isRT(word):
 
 def load_data(username):
     x_data = []
-    with open("data/tweets_{}.csv".format(username), 'r') as data_file:
-        string_doc = x_data
+    with open("data/tweets_{}.tsv".format(username), 'r') as data_file:
         for line in data_file.readlines():
-            new_line = " ".join([x.strip().lower() for x in line.split() if not isRT(x)])
-            string_doc.append(new_line)
+            tweet_text = line.split('\t')[2]
+            new_line = " ".join([x.strip().lower() for x in tweet_text.split() if not isRT(x)])
+            x_data.append(new_line)
     data_file.close()
     return x_data
 
 
 def extract_n_grams(X_train, username, save_ngrams=False):
-    output_path = "results/best_ngrams_{}.tsv".format(username)
     vect = fet.CountVectorizer(ngram_range=(1, 3), analyzer="word", min_df=0, stop_words='english')
     term_doc_mat = vect.fit_transform(X_train)
     term_doc_mat_summed = term_doc_mat.sum(axis=0)
     scores_array = np.array(term_doc_mat_summed)
     sorted_scores = (-scores_array).argsort().flatten()[:5000]
     if save_ngrams:
-        save_to_file(vect, term_doc_mat_summed, output_path, sorted_scores)
+        save_to_file(vect, term_doc_mat_summed, username, sorted_scores)
     trainx = term_doc_mat[:, sorted_scores]
-    # testx = vect.transform(x)[:, sorted_scores]
     return trainx, vect, sorted_scores
 
-def save_to_file(vect, term_doc_mat, output_path, sorted_scores):
+
+def save_to_file(vect, term_doc_mat, username, sorted_scores):
+    if not os.path.exists("results/"):
+        os.makedirs("results/")
+    output_path = "results/best_ngrams_{}.tsv".format(username)
     features = vect.get_feature_names()#[:, sorted_scores]
-    print(type(term_doc_mat))
     word_scores = term_doc_mat.A1 #[:, sorted_scores]
     with open(output_path, "w") as output_file:
         output_file.write("word\tcount\n")
@@ -53,10 +55,11 @@ def save_to_file(vect, term_doc_mat, output_path, sorted_scores):
     output_file.close()
 
 
-
 if __name__ == "__main__":
-
-
+    username = auth.username
+    data = load_data(username)
+    data, vector, scores = extract_n_grams(data, username, True)
+    print len(scores)
 
 # def train_validate_phase(classifiers, X_train, Y_train, report_file):
 #     best_classifiers = []
