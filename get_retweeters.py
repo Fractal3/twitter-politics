@@ -24,18 +24,23 @@ user_fields = "id,followers_count,statuses_count,friends_count,screen_name".spli
 entities_field = "hashtags".split(",")
 
 f = open("mostRecentRetweetId")
-startId = long(f.readline())
-mostRecentId = startId
+# Line counter for scrapping retweets
+lastLineRead_top_down = long(f.readline())
+max_line = 2928
 f.close()
 max_id = None
 
 l = 1
+counter = 1
 lis = []
-for line in reversed(open("data/tweets_{}.tsv".format(username)).readlines()):
-    tweet_id = long(line.split("\t")[0])
-    if tweet_id < mostRecentId:
+for line in open("data/tweets_{}.tsv".format(username)).readlines():
+    if counter < lastLineRead_top_down:
         pass
+    elif counter >= max_line:
+        print('ok now you can remove this block, and scrap safely')
+        break
     else:
+        tweet_id = long(line.split("\t")[0])
         retweet_timeline = twitter.get_retweets(id=tweet_id, trim_user=0, count=15)
         f = codecs.open("data/retweets_{}.tsv".format(username), "a", encoding="utf-8")
         f2 = codecs.open("data/retweets_{}_{}.tsv".format(username, outfn), "a", encoding="utf-8")
@@ -61,17 +66,17 @@ for line in reversed(open("data/tweets_{}.tsv".format(username)).readlines()):
             f2.write(line)
         f.close()
         f2.close()
-        mostRecentId = tweet_id+1
-        if l >= 75:
+        # could also make count % 74 == 0
+        if l >= 74:
             print("INFO : Sleeping")
             time.sleep(900)  ## 15 minute rest between api calls
             l = 0
         else:
             print l
             l += 1
-
+    counter += 1
     f = open('mostRecentRetweetId', 'w')
-    f.write(str(mostRecentId))
+    f.write(str(counter))
     f.close()
 
 
