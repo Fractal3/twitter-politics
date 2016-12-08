@@ -26,7 +26,6 @@ entities_field = "hashtags".split(",")
 f = open("mostRecentRetweetId")
 # Line counter for scrapping retweets
 lastLineRead_top_down = long(f.readline())
-max_line = 2928
 f.close()
 max_id = None
 
@@ -36,9 +35,6 @@ lis = []
 for line in open("data/tweets_{}.tsv".format(username)).readlines():
     if counter < lastLineRead_top_down:
         pass
-    elif counter >= max_line:
-        print('ok now you can remove this block, and scrap safely')
-        break
     else:
         tweet_id = long(line.split("\t")[0])
         retweet_timeline = twitter.get_retweets(id=tweet_id, trim_user=0, count=15)

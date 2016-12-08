@@ -37,7 +37,7 @@ for i in range(0, 16):  ## iterate through all tweets
     user_timeline = twitter.get_user_timeline(user_id=auth.scrapped_id, count=200, include_retweets=False, max_id=max_id,
                                               since_id=startId)
     f = codecs.open("data/tweets_{}.tsv".format(username), "a", encoding="utf-8")
-    f2 = codecs.open("data/tweets_{}_{}.tsv".format(username,outfn), "a", encoding="utf-8")
+    f2 = codecs.open("data/tweets_{}_{}.t sv".format(username,outfn), "a", encoding="utf-8")
     lis = []
     for tweet in user_timeline:
         id = tweet['id']
